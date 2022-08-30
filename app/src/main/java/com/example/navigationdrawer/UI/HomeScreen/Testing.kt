@@ -1,50 +1,48 @@
 package com.example.navigationdrawer.UI.HomeScreen
 
+import android.app.DatePickerDialog
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.view.KeyEvent
+import android.view.View
+import android.widget.*
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import com.example.navigationdrawer.R
-import com.example.navigationdrawer.databinding.ActivityTestingBinding
-import java.text.DecimalFormat
-import java.text.NumberFormat
 
 class Testing : AppCompatActivity() {
-    private lateinit var binding: ActivityTestingBinding
-    private var strDisplay = ""
-    private var strResult = ""
+
+    private lateinit var textView:TextView
+    private lateinit var button: Button
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityTestingBinding.inflate(layoutInflater)
-        setContentView(binding.root)
 
-        binding.apply {
-            edtNumber.addTextChangedListener(object :TextWatcher{
-                override fun beforeTextChanged(
-                    text: CharSequence?,
-                    start: Int,
-                    count: Int,
-                    after: Int
-                ) {
+        setContentView(R.layout.activity_testing)
+        //find id
+        textView = findViewById(R.id.text_dates)
+        button   = findViewById(R.id.button)
+        //
 
-                }
+        //set onclick to button
+        button.setOnClickListener {
+            // create object from date picker
+            val dialog = DatePickerDialog(this)
 
-                override fun onTextChanged(text: CharSequence?, start: Int, before: Int, count: Int) {
-                    strResult = text.toString()
-                    val formater = DecimalFormat("###,###")
-                    strDisplay = formater.format(text.toString().toBigDecimal())
-                    edtNumber.setText(strDisplay)
-                }
+            // get text from selected date
+            dialog.setOnDateSetListener { _, year, month, dayOfMonth ->
 
-                override fun afterTextChanged(text: Editable?) {
-                    strResult = text.toString()
-                    val formater = DecimalFormat("###,###")
-                    strDisplay = formater.format(text.toString().toBigDecimal())
-                    edtNumber.setText(strDisplay)
-                }
+                    textView.text = "Selected Date: $dayOfMonth / ${month+1} / $year"
+
+
             }
-            )
+            dialog.show()
         }
+
+
     }
+
+
+
 }
